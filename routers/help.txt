@@ -1,0 +1,17 @@
+En FastAPI, los decoradores son utilizados para definir rutas y operaciones en las aplicaciones web. Los decoradores en FastAPI pueden contener diferentes parámetros, según el propósito de la función decorada.
+
+A continuación, se muestran algunos de los parámetros que se pueden utilizar en un decorador en FastAPI:
+
+path: Es el parámetro más común y se utiliza para especificar la ruta o URL de la operación. Por ejemplo, @app.get("/items/{item_id}") define una ruta con una variable de ruta "item_id".
+
+methods: Se utiliza para especificar los métodos HTTP permitidos para la operación. Por defecto, la mayoría de los decoradores de ruta en FastAPI se definen como operaciones GET, pero también se pueden utilizar otros métodos como POST, PUT, DELETE, etc.
+
+dependencies: Se utiliza para definir las dependencias que se deben resolver antes de ejecutar la operación. Las dependencias pueden ser funciones, clases o clases de dependencia.
+
+response_model: Se utiliza para especificar el modelo de respuesta de la operación. El modelo se puede definir como una clase Pydantic o como una respuesta de JSON.
+
+status_code: Se utiliza para especificar el código de estado HTTP de la respuesta de la operación. El valor predeterminado es 200 (OK), pero se pueden especificar otros códigos de estado como 201 (Created) o 404 (Not Found).
+
+tags: Se utiliza para agrupar las operaciones en categorías. Los tags son útiles para generar la documentación de la API.
+
+Estos son solo algunos de los parámetros que se pueden utilizar en un decorador en FastAPI. Hay muchos otros parámetros y opciones disponibles para personalizar la funcionalidad de la aplicación web.

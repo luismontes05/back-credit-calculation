@@ -1,0 +1,48 @@
+La función Column() en SQLAlchemy se utiliza para definir una columna en una tabla de base de datos. Los parámetros de entrada que acepta la función Column() son:
+
+1- name: El nombre de la columna como una cadena de caracteres.
+
+2- type_: El tipo de datos de la columna. Puede ser un objeto de tipo de datos proporcionado por SQLAlchemy (por ejemplo, Integer, String, DateTime, etc.) o un tipo de datos personalizado definido por el usuario.
+
+3- primary_key: Un booleano que indica si esta columna es una clave primaria de la tabla.
+
+4- nullable: Un booleano que indica si esta columna puede tener valores nulos.
+
+5- unique: Un booleano que indica si esta columna debe ser única en la tabla.
+
+6- index: Un booleano que indica si esta columna debe tener un índice.
+
+7- default: El valor predeterminado de la columna.
+
+8- server_default: El valor predeterminado de la columna definido en el servidor de base de datos.
+
+9- onupdate: El valor que se actualizará automáticamente cuando se actualice una fila.
+
+10- autoincrement: Un booleano que indica si esta columna debe ser incrementada automáticamente.
+
+/*TIPOS DE DATOS*/
+SQLAlchemy es una biblioteca de Python que se utiliza para trabajar con bases de datos relacionales. Algunos de los tipos de datos que se pueden utilizar en SQLAlchemy incluyen:
+
+Integer: se utiliza para almacenar números enteros.
+
+Float: se utiliza para almacenar números decimales.
+
+String: se utiliza para almacenar cadenas de caracteres.
+
+Boolean: se utiliza para almacenar valores verdaderos o falsos.
+
+Date: se utiliza para almacenar fechas.
+
+DateTime: se utiliza para almacenar fechas y horas.
+
+Time: se utiliza para almacenar horas.
+
+Enum: se utiliza para almacenar una lista predefinida de valores.
+
+PickleType: se utiliza para almacenar objetos Python complejos.
+
+LargeBinary: se utiliza para almacenar datos binarios grandes.
+
+Text: se utiliza para almacenar cadenas de caracteres de longitud variable.
+
+Estos son solo algunos de los tipos de datos que se pueden utilizar en SQLAlchemy. Es importante tener en cuenta que la selección del tipo de datos correcto dependerá del tipo de información que se esté almacenando y del tipo de consulta que se esté ejecutando en la base de datos.
