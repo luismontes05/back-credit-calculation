@@ -1,5 +1,7 @@
 from config.database import Base
-from sqlalchemy import Column, Integer, String, Enum, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, Enum, DateTime, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
+
 from datetime import datetime
 
 type_user_enum_option = Enum('staf','user')
@@ -16,3 +18,6 @@ class User(Base):
     type_user = Column(type_user_enum_option, nullable=False, default='user')
     create_date = Column(DateTime, nullable=False, default=datetime.now())
     status = Column(Boolean, nullable=False, default=True)
+    company_id = Column(Integer, ForeignKey('company.id'))
+    company = relationship("Company", backref="user")
+

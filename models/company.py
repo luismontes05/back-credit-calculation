@@ -1,12 +1,13 @@
 from config.database import Base
-from sqlalchemy import Column, Integer, String, Enum, DateTime, Boolean, Text
+from sqlalchemy import Column, Integer, String, Enum, DateTime, Boolean, Text, ForeignKey
 from datetime import datetime
 
-type_document_enum_option = Enum('nit','cc')
+
+type_document_enum_option = Enum('CC','NIT','TI','PS','EXT')
 
 class Company(Base):
 
-    __tablename__ = "comapny"
+    __tablename__ = "company"
 
     id = Column(Integer, primary_key = True)
     create_date = Column(DateTime, nullable=False, default=datetime.now())
