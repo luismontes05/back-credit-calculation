@@ -8,7 +8,7 @@ from services.user import UserService
 from config.database import Session
 
 
-tiempo_expiracion = 30
+tiempo_expiracion = 10000
 fecha_expiracion = datetime.datetime.utcnow() + datetime.timedelta(minutes=tiempo_expiracion)
 
 def create_token(data: dict):
@@ -34,11 +34,12 @@ def validate_token(token: str) -> dict:
             "type_user": user.type_user,
         }
         return JSONResponse(content=content, status_code=200)'''
-    
-    except jwt.exceptions.InvalidSignatureError:
+    except jwt.exceptions.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail={"message": "Token Expired"})
-    except jwt.exceptions.DecodeError:
+    except jwt.exceptions.InvalidSignatureError:
         raise HTTPException(status_code=401, detail={"message": "Token is Invalid"})
+    except jwt.exceptions.DecodeError:
+        raise HTTPException(status_code=401, detail={"message": "The token could not be decode"})
     
 def token_decode(request: Request) -> dict:
     token = request.headers['authorization'].split(" ")[1]

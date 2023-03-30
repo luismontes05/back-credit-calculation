@@ -36,11 +36,11 @@ class Client(Base):
     status_credit = Column(Boolean)
     maximum_amount = Column(Numeric(12, 2))
     minimum_amount = Column(Numeric(12, 2))
-    risk_level = Column(Interval(1, 10))
-    habit_pay = Column(Interval(1, 10))
+    risk_level = Column(Integer)
+    habit_pay = Column(Integer)
     debt_value = Column(Numeric(12, 2))
     fixed_expenses = Column(Numeric(12, 2))
-    data_credit_point = Column(Interval(1, 1000))
+    data_credit_point = Column(Integer)
     account_bank = Column(String(50))
     type_account_bank = Column(String(20))
     observation = Column(Text)
@@ -69,7 +69,7 @@ class PropertieClient(Base):
     name = Column(String(120), nullable=False)
     description = Column(Text)
     value = Column(Float, nullable=False) 
-    status_range = Column(Interval(1, 10))
+    status_range = Column(Integer)
     status = Column(Boolean, default=True)
     type_properties_id = Column(Integer, ForeignKey('type_properties.id'))
     client_id = Column(Integer, ForeignKey('client.id')) 
@@ -90,7 +90,7 @@ class ReferencesClient(Base):
     update_date = Column(DateTime, default=datetime.now())
     status = Column(Boolean, default=True)
     client_id = Column(Integer, ForeignKey('client.id'))
-    client = relationship("Client", backref="client") 
+    client_reference = relationship("Client", backref="client_reference") 
 
 
 

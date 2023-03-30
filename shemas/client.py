@@ -32,10 +32,10 @@ class ReferencesClient(BaseModel):
     frist_name: str = Field(..., min_length=3, max_length=50)
     last_name: str = Field(..., min_length=3, max_length=50)
     telephone_number:  str = Field(..., min_length=7, max_length=10)
-    type_reference: Optional[CivilStatus] = Field(default='PERSONAL')
+    type_reference: Optional[TypeReference] = Field(default='PERSONAL')
     relation: str = Field(..., min_length=3, max_length=50)
     status: bool = Field(default=True)
-    client_id: int
+    client_id: Optional[int]
 
     class Config:
         schema_extra = {
@@ -59,13 +59,13 @@ class PropertiesClient(BaseModel):
     status_range: int = Field(ge=1, le=10)
     status: bool = Field(default=True)
     type_properties_id: int
-    client_id: int
+    client_id: Optional[int] = 1
 
     class Config:
         schema_extra = {
             "example":{
                     'name': 'CASA FINCA',
-                    'description':'cASA FINCA UBICADA EN LA AV CONDINA',
+                    'description':'CASA FINCA UBICADA EN LA AV CONDINA',
                     'value':  100000000,
                     'status_range': 9,
                     'type_properties_id': 1
@@ -75,20 +75,18 @@ class PropertiesClient(BaseModel):
 class Client(BaseModel):
 
     id: Optional[int] = None
-    create_date: datetime = Field(default=datetime.now())
-    last_update: datetime = Field(default=datetime.now())
     first_name: str = Field(..., min_length=3, max_length=50)
     last_name: str = Field(..., min_length=3, max_length=50)
     type_document: TypeDocument = Field(default="CC")
     num_document: str = Field(..., min_length=3, max_length=20)
     document_from: str = Field(..., min_length=5, max_length=50)
-    expedition_date_document: Optional[datetime]
+    expedition_date_document: Optional[date]
     birth_date: Optional[date]
     birth_city: Optional[str] = Field(..., min_length=3, max_length=50)
     sex: Optional[Sex]
     telephone_number_1: Optional[str] = Field(..., min_length=7, max_length=50)
     telephone_number_2: Optional[str] = Field(..., min_length=7, max_length=50)
-    email: Optional[EmailStr]
+    email: EmailStr
     city_residence: Optional[str] = Field(..., min_length=3, max_length=50)
     civil_status: Optional[CivilStatus]
     address_1: str = Field(..., max_length=100)
@@ -112,16 +110,12 @@ class Client(BaseModel):
     id_user_create: Optional[int]
     company_id: Optional[int]
     user_id: Optional[int]
-    company_id: Optional[int]
-    user_id: Optional[int]
     references_client: List[ReferencesClient]
     properties_client: List[PropertiesClient]
 
     class Config:
         schema_extra = {
             "example":{
-                'create_date': '2023-03-28',
-                'last_update': '2023-03-28',
                 'first_name': 'Pedro',
                 'last_name': 'Gomez Gomez',
                 'type_document': 'CC',
@@ -154,25 +148,25 @@ class Client(BaseModel):
                 'type_account_bank': 'AHORROS',
                 'observation': 'CLIENTE DE PRUEBA',
                 'status': True,
-                'id_user_create': 1,
-                'company_id': 1,
-                'company_id': 1,
-                'user_id': 1,
-                'references_client': {
-                    'frist_name': 'Pedro',
-                    'last_name': 'Gomez Gomez',
-                    'telephone_number': '3100000000',
-                    'type_reference': 'PERSONAL',
-                    'relation': 'AMIGOS',
-                    'status': True,
-                    'client_id': 1
-                },
-                'properties_client':{
-                    'name': 'CASA FINCA',
-                    'description':'cASA FINCA UBICADA EN LA AV CONDINA',
-                    'value':  100000000,
-                    'status_range': 9,
-                    'type_properties_id': 1
-                }
+                'references_client': [                    
+                    {
+                        'frist_name': 'Pedro',
+                        'last_name': 'Gomez Gomez',
+                        'telephone_number': '3100000000',
+                        'type_reference': 'PERSONAL',
+                        'relation': 'AMIGOS',
+                        'status': True,
+                        'client_id': 1
+                    }
+                ],
+                'properties_client':[
+                    {
+                        'name': 'CASA FINCA',
+                        'description':'CASA FINCA UBICADA EN LA AV CONDINA',
+                        'value':  100000000,
+                        'status_range': 9,
+                        'type_properties_id': 1
+                    }
+                ]
             }
         }
