@@ -74,7 +74,7 @@ class PropertieClient(Base):
     type_properties_id = Column(Integer, ForeignKey('type_properties.id'))
     client_id = Column(Integer, ForeignKey('client.id')) 
     typeproperties = relationship("TypeProperties", backref="typeproperties")
-    client = relationship("Client", backref="client")
+    client = relationship("Client", backref="propertie_client")
 
 class ReferencesClient(Base):
 
@@ -90,7 +90,7 @@ class ReferencesClient(Base):
     update_date = Column(DateTime, default=datetime.now())
     status = Column(Boolean, default=True)
     client_id = Column(Integer, ForeignKey('client.id'))
-    client_reference = relationship("Client", backref="client_reference") 
+    client_reference = relationship("Client", backref="references_client") 
 
 
 

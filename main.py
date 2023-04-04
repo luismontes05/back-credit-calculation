@@ -4,7 +4,7 @@ from fastapi import Request
 from pydantic import BaseModel
 from config.database import engine, Base, Session
 
-#no borrar los modelos 
+#(OJO) NO borrar los modelos 
 from models.user import User
 from models.company import Company
 from models.client import Client, TypeProperties, PropertieClient, ReferencesClient
@@ -22,10 +22,10 @@ app.title = "Backend Software Credit Calculation"
 app.version = "0.0.1"
 app.include_router(user_router)
 app.include_router(client_router)
-app.add_middleware(error_handler)
+#app.add_middleware(error_handler)
 
 Base.metadata.create_all(bind=engine)
 
-@app.get('/', tags=['home'])
+'''@app.get('/', tags=['home'])
 def message():
-    return HTMLResponse('<h1>Hello, welcome to applications for software developer calculation credit</h1>')
+    return HTMLResponse('<h1>Hello, welcome to applications for software developer calculation credit</h1>')'''
