@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Body
 from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Request
 from pydantic import BaseModel
 from config.database import engine, Base, Session
@@ -22,7 +23,14 @@ app.title = "Backend Software Credit Calculation"
 app.version = "0.0.1"
 app.include_router(user_router)
 app.include_router(client_router)
-#app.add_middleware(error_handler)
+app.add_middleware(error_handler)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 Base.metadata.create_all(bind=engine)
 

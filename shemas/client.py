@@ -85,14 +85,14 @@ class Client(BaseModel):
     birth_date: Optional[date]
     birth_city: Optional[str] = Field(..., min_length=3, max_length=50)
     sex: Optional[Sex]
-    telephone_number_1: Optional[str] = Field(..., min_length=7, max_length=50)
-    telephone_number_2: Optional[str] = Field(..., min_length=7, max_length=50)
+    telephone_number_1: Optional[str] = Field(...,max_length=10)
+    telephone_number_2: Optional[str] = Field(...,max_length=10)
     email: EmailStr
-    city_residence: Optional[str] = Field(..., min_length=3, max_length=50)
+    city_residence: Optional[str] = Field(...,max_length=50)
     civil_status: Optional[CivilStatus]
     address_1: str = Field(..., max_length=100)
     address_2: Optional[str] = Field(..., max_length=100)
-    profession: Optional[str] = Field(..., min_length=3, max_length=50)
+    profession: Optional[str] = Field(..., max_length=50)
     fixed_income_value: Optional[float]
     other_income: Optional[float]
     approved_credit: Optional[bool]
@@ -104,8 +104,8 @@ class Client(BaseModel):
     debt_value: Optional[float]
     fixed_expenses: Optional[float]
     data_credit_point: Optional[int] = Field(ge=1, le=1000)
-    account_bank: Optional[str] = Field(..., min_length=3, max_length=50)
-    type_account_bank: Optional[str] = Field(..., min_length=3, max_length=20)
+    account_bank: Optional[str] = Field(..., max_length=50)
+    type_account_bank: Optional[str] = Field(...,max_length=20)
     observation: Optional[Text]
     status: Optional[bool]
     id_user_create: Optional[int]

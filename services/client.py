@@ -1,17 +1,19 @@
-from models.client import Client as ClientModel, PropertieClient as PropertieClientModel, ReferencesClient as ReferencesClientModel
+from models.client import Client as ClientModel, PropertieClient as PropertieClientModel, ReferencesClient as ReferencesClientModel, TypeProperties as TypePropertiesModel
 from models.user import User as UserModel
 from fastapi.encoders import jsonable_encoder
 from fastapi import HTTPException
 from utils.jwt_manager import token_decode
 from passlib.context import CryptContext
 from datetime import datetime
+from config.database import Session
 
 
 class ClientService():
     
-    def __init__(self, db, request) -> None:
+    def __init__(self, request) -> None:
         
-        self.db = db 
+
+        self.db = Session()
         #Obtiene los datos del header y decodifica el token para identificar el usuario
         self.request = request 
         self.data_user = token_decode(request)
@@ -36,13 +38,14 @@ class ClientService():
         elif id == 0:
             list_client = []
             for cl in client:
+                cl.full_name = f'{cl.first_name} {cl.last_name}'
                 cl.user
                 cl.propertie_client
                 cl.references_client
                 list_client.append(cl)
             
             client = list_client
-
+        self.db.close()
         return  client
     
 
@@ -56,6 +59,7 @@ class ClientService():
         if not reference:
             raise HTTPException(status_code=404, detail={"message": "No existen referencias asociadas al cliente"}) 
         
+        self.db.close()
         return reference
     
 
@@ -67,8 +71,9 @@ class ClientService():
             propertie = self.db.query(PropertieClientModel).filter(PropertieClientModel.client_id == client_id).all()
 
         if not propertie:
+            self.db.close()  
             raise HTTPException(status_code=404, detail={"message": "No existen propiedades asociadas al cliente"}) 
-        
+        self.db.close()  
         return propertie
 
 
@@ -77,11 +82,13 @@ class ClientService():
         #Valida que el usuario a crear no exista 
         result = self.db.query(ClientModel).filter(ClientModel.type_document == type_document, ClientModel.num_document == num_document, ClientModel.company_id == company_id).first()
         if result:
+            self.db.close()  
             raise HTTPException(status_code=401, detail={"message": "El cliente ya se encuentra registrado en la base de datos."})
         
         #Valida que el email ingresado no exista, ya que este sirve para el usuario y debe ser unico por empresa (company)
         result_user = self.db.query(UserModel).filter(UserModel.email == email, UserModel.company_id == company_id).first()
         if result_user:
+            self.db.close()  
             raise HTTPException(status_code=401, detail={"message": "El email ingresado para el cliente ya se encuentra registrado"})       
     
 
@@ -145,6 +152,7 @@ class ClientService():
         new_reference = ReferencesClientModel(**reference.dict(),client_reference=client)
         self.db.add(new_reference)
         self.db.commit()
+        self.db.close()  
         new_reference = self.db.query(ReferencesClientModel).filter(ReferencesClientModel.id == new_reference.id).all()
         return new_reference
     
@@ -155,6 +163,7 @@ class ClientService():
         new_propertie = PropertieClientModel(**propertie.dict(),client=client)
         self.db.add(new_propertie)
         self.db.commit()
+        self.db.close()  
         new_propertie = self.db.query(PropertieClientModel).filter(PropertieClientModel.id == new_propertie.id).all()
         return new_propertie
 
@@ -200,6 +209,7 @@ class ClientService():
         current_client.observation = client.observation
         current_client.status = client.status
         self.db.commit()
+        self.db.close()  
 
         return {
             "status": True,
@@ -219,6 +229,7 @@ class ClientService():
         current_reference.update_date = datetime.now()
         current_reference.status = reference.status
         self.db.commit()
+        self.db.close()  
         
         return {
             "status": True,
@@ -237,6 +248,7 @@ class ClientService():
         current_propertie.status = propertie.status
         current_propertie.type_properties_id = propertie.type_properties_id
         self.db.commit()
+        self.db.close()  
         
         return {
             "status": True,
@@ -248,6 +260,7 @@ class ClientService():
 
         self.db.query(ReferencesClientModel).filter(ReferencesClientModel.id == id).delete()
         self.db.commit()
+        self.db.close()  
         
         return {
             "status": True,
@@ -259,11 +272,18 @@ class ClientService():
 
         self.db.query(PropertieClientModel).filter(PropertieClientModel.id == id).delete()
         self.db.commit()
+        self.db.close()  
         
         return {
             "status": True,
             "message": "Propiedad eliminada de forma correcta"
         }
+    
+    def type_properties(self):
+        type_properties = self.db.query(TypePropertiesModel).filter(TypePropertiesModel.status == True).all()
+        self.db.close()    
+        return type_properties
+    
 
 
         

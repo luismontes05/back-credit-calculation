@@ -5,7 +5,6 @@ from jwt import encode, decode
 from fastapi import HTTPException, Request
 from fastapi.responses import JSONResponse
 from services.user import UserService
-from config.database import Session
 
 
 tiempo_expiracion = 10000
@@ -21,9 +20,8 @@ def validate_token(token: str) -> dict:
 
     try:
 
-        db = Session()
         data: dict = decode(token, key=getenv('SECRET'), algorithms=['HS256'])
-        user = UserService(db).get_user_validate_token(id=data['id'], status=data['status'])
+        user = UserService().get_user_validate_token(id=data['id'], status=data['status'])
         if not user:
             raise HTTPException(status_code=401, detail={"message": "User invalid or User Inactive"})
         

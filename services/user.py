@@ -3,15 +3,17 @@ from models.user import User as UserModel
 from fastapi.encoders import jsonable_encoder
 from fastapi import HTTPException
 from jwt import decode
+from config.database import Session
 
 class UserService():
 
-    def __init__(self, db) -> None:
-        self.db = db 
+    def __init__(self) -> None:
+        self.db = self.db = Session()
 
     def get_user_login(self,email):
         result = self.db.query(UserModel).filter(UserModel.email == email).first()
         user = jsonable_encoder(result)
+        self.db.close()
         return user
     
     def create_user(self, user: UserModel, type_return='json'):
@@ -21,7 +23,7 @@ class UserService():
             self.db.add(new_user)
             self.db.commit()
             new_user = self.db.query(UserModel).filter_by(id=new_user.id).first()
-
+            self.db.close()
             if type_return == 'json':
                 return jsonable_encoder(new_user)
             return new_user
@@ -30,10 +32,12 @@ class UserService():
     
     def get_user_validate_token(self,id: int, status: bool):
         result = self.db.query(UserModel).filter(UserModel.id == id, UserModel.status == status).first()
+        self.db.close()
         return result
     
     def validate_email_exists(self, email: str):
         result = self.db.query(UserModel).filter(UserModel.email == email).first()
+        self.db.close()
         return result
     
     def validate_is_user_staf(self,token):
