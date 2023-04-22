@@ -1,3 +1,5 @@
+from os import getenv
+from dotenv import load_dotenv
 from pydantic import BaseSettings
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -5,9 +7,12 @@ from sqlalchemy.orm import sessionmaker
 
 # Configuración de la conexión a la base de datos
 class DBSettings(BaseSettings):
-    db_user: str = 'root'
-    db_password: str = 'luisdavid2906'
-    db_host: str = '127.0.0.1'
+
+    load_dotenv()
+
+    db_user: str = getenv('DB_USER')
+    db_password: str = getenv('DB_PASSWORD')
+    db_host: str = getenv('DB_HOST')
     db_port: int = '3306'
     db_name: str = 'credit_qa'
 
