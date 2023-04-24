@@ -45,7 +45,6 @@ class ClientService():
                 list_client.append(cl)
             
             client = list_client
-        self.db.close()
         return  client
     
 
